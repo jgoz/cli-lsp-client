@@ -1,4 +1,4 @@
-# cli-lsp-client
+# @jgoz/cli-lsp-client
 
 CLI tool for getting LSP diagnostics. Uses a background daemon to keep LSP servers running.
 
@@ -45,7 +45,7 @@ The easiest way to integrate with Claude Code is via the official plugin:
 
 ```bash
 # Add the plugin marketplace
-/plugin marketplace add eli0shin/cli-lsp-client
+/plugin marketplace add jgoz/cli-lsp-client
 
 # Install the plugin
 /plugin install lsp-plugin
@@ -68,7 +68,7 @@ No manual configuration needed - the plugin handles everything!
 Add as an MCP server to enable Claude to access symbol definitions and hover information:
 
 ```bash
-claude mcp add lsp --scope user -- bunx cli-lsp-client mcp-server
+claude mcp add lsp --scope user -- bunx @jgoz/cli-lsp-client mcp-server
 ```
 
 ### Manual Hook Configuration
@@ -91,7 +91,7 @@ Add the following to your Claude Code settings.json:
         "hooks": [
           {
             "type": "command",
-            "command": "bunx cli-lsp-client start"
+            "command": "bunx @jgoz/cli-lsp-client start"
           }
         ]
       }
@@ -102,7 +102,7 @@ Add the following to your Claude Code settings.json:
         "hooks": [
           {
             "type": "command",
-            "command": "bunx cli-lsp-client claude-code-hook"
+            "command": "bunx @jgoz/cli-lsp-client claude-code-hook"
           }
         ]
       }
@@ -180,9 +180,9 @@ npx cli-lsp-client diagnostics Component.svelte
 
 ```bash
 # Specify custom config file path
-npx cli-lsp-client --config-file ./my-config.json diagnostics Component.svelte
-npx cli-lsp-client --config-file ./my-config.json hover Component.svelte myFunction
-npx cli-lsp-client --config-file ./my-config.json status
+npx @jgoz/cli-lsp-client --config-file ./my-config.json diagnostics Component.svelte
+npx @jgoz/cli-lsp-client --config-file ./my-config.json hover Component.svelte myFunction
+npx @jgoz/cli-lsp-client --config-file ./my-config.json status
 ```
 
 **Important:** When using `--config-file`, you must include it on every command. The CLI automatically restarts the daemon when switching between different config files to ensure the correct language servers are loaded.
@@ -205,22 +205,22 @@ npx cli-lsp-client --config-file ./my-config.json status
 
 ```bash
 # Check a TypeScript file
-npx cli-lsp-client diagnostics src/example.ts
+npx @jgoz/cli-lsp-client diagnostics src/example.ts
 
 # Check any supported file type
-npx cli-lsp-client diagnostics app.py
-npx cli-lsp-client diagnostics main.go
-npx cli-lsp-client diagnostics analysis.R
-npx cli-lsp-client diagnostics Program.cs
+npx @jgoz/cli-lsp-client diagnostics app.py
+npx @jgoz/cli-lsp-client diagnostics main.go
+npx @jgoz/cli-lsp-client diagnostics analysis.R
+npx @jgoz/cli-lsp-client diagnostics Program.cs
 
 # Check Swift files (requires config file)
-npx cli-lsp-client diagnostics Sources/App/main.swift
+npx @jgoz/cli-lsp-client diagnostics Sources/App/main.swift
 ```
 
 Exit codes: 0 for no issues, 2 for issues found.
 
 ```bash
-$ npx cli-lsp-client diagnostics error.ts
+$ npx @jgoz/cli-lsp-client diagnostics error.ts
 ERROR at line 5, column 20:
   Argument of type 'string' is not assignable to parameter of type 'number'.
   Source: typescript
@@ -231,19 +231,19 @@ ERROR at line 5, column 20:
 
 ```bash
 # Get hover info for a function
-npx cli-lsp-client hover src/main.ts myFunction
+npx @jgoz/cli-lsp-client hover src/main.ts myFunction
 
 # Get hover info for a variable or type
-npx cli-lsp-client hover app.py MyClass
-npx cli-lsp-client hover analysis.R mean
-npx cli-lsp-client hover Program.cs Console
+npx @jgoz/cli-lsp-client hover app.py MyClass
+npx @jgoz/cli-lsp-client hover analysis.R mean
+npx @jgoz/cli-lsp-client hover Program.cs Console
 
 # Get hover info for Swift symbols (requires config file)
-npx cli-lsp-client hover Sources/App/main.swift greetUser
+npx @jgoz/cli-lsp-client hover Sources/App/main.swift greetUser
 ```
 
 ````bash
-$ npx cli-lsp-client hover src/client.ts runCommand
+$ npx @jgoz/cli-lsp-client hover src/client.ts runCommand
 Location: src/client.ts:370:17
 ```typescript
 export function runCommand(command: string, commandArgs: string[]): Promise<void>
@@ -255,28 +255,28 @@ export function runCommand(command: string, commandArgs: string[]): Promise<void
 
 ```bash
 # Check daemon status with uptime and running language servers
-npx cli-lsp-client status
+npx @jgoz/cli-lsp-client status
 
 # List all running daemons across directories
-npx cli-lsp-client list
+npx @jgoz/cli-lsp-client list
 
 # Stop current directory's daemon
-npx cli-lsp-client stop
+npx @jgoz/cli-lsp-client stop
 
 # Stop all daemons across all directories (useful after package updates)
-npx cli-lsp-client stop-all
+npx @jgoz/cli-lsp-client stop-all
 
 # Show version
-npx cli-lsp-client --version
+npx @jgoz/cli-lsp-client --version
 
 # Show help
-npx cli-lsp-client help
+npx @jgoz/cli-lsp-client help
 ````
 
 The `status` command shows the current daemon's uptime and running language servers:
 
 ```bash
-$ npx cli-lsp-client status
+$ npx @jgoz/cli-lsp-client status
 LSP Daemon Status
 ================
 PID: 33502
@@ -292,7 +292,7 @@ Total: 2 language servers running
 The `list` command shows all running daemon instances with their working directories, PIDs, and status:
 
 ```bash
-$ npx cli-lsp-client list
+$ npx @jgoz/cli-lsp-client list
 
 Running Daemons:
 ================
@@ -540,29 +540,29 @@ For more information about SourceKit-LSP, see the [official documentation](https
 
 ```bash
 # Start LSP servers for current directory (faster subsequent requests)
-npx cli-lsp-client start
+npx @jgoz/cli-lsp-client start
 
 # Start servers for specific directory
-npx cli-lsp-client start /path/to/project
+npx @jgoz/cli-lsp-client start /path/to/project
 
 # View daemon log file path
-npx cli-lsp-client logs
+npx @jgoz/cli-lsp-client logs
 ```
 
 ## Examples
 
 ```bash
 # Check a specific file
-npx cli-lsp-client diagnostics src/main.ts
+npx @jgoz/cli-lsp-client diagnostics src/main.ts
 
 # Get hover info for a symbol
-npx cli-lsp-client hover src/main.ts myFunction
+npx @jgoz/cli-lsp-client hover src/main.ts myFunction
 
 # List all daemon instances
-npx cli-lsp-client list
+npx @jgoz/cli-lsp-client list
 
 # Stop all daemons after package update
-npx cli-lsp-client stop-all
+npx @jgoz/cli-lsp-client stop-all
 ```
 
 ## Development

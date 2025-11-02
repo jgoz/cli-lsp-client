@@ -9,4 +9,4 @@ source "$(dirname "$0")/../../shared/hooks/utils.sh"
 PKG_RUNNER=$(get_package_runner)
 
 # Run cli-lsp-client start
-exec $PKG_RUNNER cli-lsp-client start
+exec $PKG_RUNNER @jgoz/cli-lsp-client start
