@@ -12,6 +12,7 @@ export function registerClaudeCodeHookCommand(program: Command) {
     .action(async () => {
       try {
         const isPluginMode = !!process.env.CLAUDE_PLUGIN_ROOT;
+        const isBlocking = !process.env.CLI_LSP_NONBLOCKING;
         const hookData = await readHookInput();
 
         if (!hookData) {
@@ -43,10 +44,16 @@ export function registerClaudeCodeHookCommand(program: Command) {
               }
             }));
           } else if (result.hasIssues) {
-            process.stdout.write(JSON.stringify({
-              decision: 'block',
-              reason: result.output
-            }));
+            if (isBlocking) {
+              process.stdout.write(JSON.stringify({
+                decision: 'block',
+                reason: result.output
+              }));
+            } else {
+              process.stdout.write(JSON.stringify({
+                additionalContext: result.output
+              }));
+            }
           } else {
             process.stdout.write('{}');
           }
