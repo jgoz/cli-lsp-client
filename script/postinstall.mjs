@@ -53,7 +53,7 @@ function detectPlatformAndArch() {
 
 function findBinary() {
   const { platform, arch } = detectPlatformAndArch()
-  const packageName = `cli-lsp-client-${platform}-${arch}`
+  const packageName = `@jgoz/cli-lsp-client-${platform}-${arch}`
   const binary = platform === "windows" ? "cli-lsp-client.exe" : "cli-lsp-client"
 
   try {
@@ -80,7 +80,7 @@ async function regenerateWindowsCmdWrappers() {
 
     const isGlobal = process.env.npm_config_global === "true" || pkgPath.includes(path.join("npm", "node_modules"))
 
-    const cmd = `npm rebuild cli-lsp-client --ignore-scripts${isGlobal ? " -g" : ""}`
+    const cmd = `npm rebuild @jgoz/cli-lsp-client --ignore-scripts${isGlobal ? " -g" : ""}`
     const opts = {
       stdio: "inherit",
       shell: true,
