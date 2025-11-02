@@ -27,7 +27,7 @@
     "zod": "3.25"
   },
   "bin": {
-    "cli-lsp-client": "./bin/cli-lsp-client"
+    "cli-lsp-client": "bin/cli-lsp-client"
   },
   "bugs": {
     "url": "https://github.com/jgoz/cli-lsp-client/issues"
