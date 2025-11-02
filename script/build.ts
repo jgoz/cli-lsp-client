@@ -16,7 +16,7 @@ export async function build(version: string): Promise<Record<string, string>> {
   await $`rm -rf dist`;
 
   const binaries: Record<string, string> = {};
-  const pkgName = pkg.name.split('/').at(1) ?? pkg.name;
+  const [scope, pkgName = pkg.name] = pkg.name.split('/');
 
   for (const [os, arch] of targets) {
     process.stdout.write(`Building ${os}-${arch}\n`);
@@ -34,7 +34,7 @@ export async function build(version: string): Promise<Record<string, string>> {
     await Bun.file(`dist/${name}/package.json`).write(
       JSON.stringify(
         {
-          name,
+          name: scope.startsWith('@') ? `${scope}/${name}` : name,
           version,
           os: [os === 'windows' ? 'win32' : os],
           cpu: [arch],
