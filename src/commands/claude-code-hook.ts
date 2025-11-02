@@ -9,10 +9,10 @@ export function registerClaudeCodeHookCommand(program: Command) {
   program
     .command('claude-code-hook')
     .description('Internal command for Claude Code integration')
-    .action(async () => {
+    .option('-n, --non-blocking', 'Return non-blocking output when issues present')
+    .action(async ({ nonBlocking }) => {
       try {
         const isPluginMode = !!process.env.CLAUDE_PLUGIN_ROOT;
-        const isBlocking = !process.env.CLI_LSP_NONBLOCKING;
         const hookData = await readHookInput();
 
         if (!hookData) {
@@ -44,7 +44,7 @@ export function registerClaudeCodeHookCommand(program: Command) {
               }
             }));
           } else if (result.hasIssues) {
-            if (isBlocking) {
+            if (!nonBlocking) {
               process.stdout.write(JSON.stringify({
                 decision: 'block',
                 reason: result.output
