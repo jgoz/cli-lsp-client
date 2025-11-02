@@ -31,7 +31,7 @@ else
         *) arch="$(uname -m)" ;;
     esac
 
-    name="cli-lsp-client-${platform}-${arch}"
+    name="@jgoz/cli-lsp-client-${platform}-${arch}"
     binary="cli-lsp-client"
     [ "$platform" = "win32" ] && binary="cli-lsp-client.exe"
 
