@@ -1,6 +1,6 @@
 {
   "name": "@jgoz/cli-lsp-client",
-  "version": "1.20.0",
+  "version": "1.20.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jgoz/cli-lsp-client.git"
