@@ -51,7 +51,11 @@ export function registerClaudeCodeHookCommand(program: Command) {
               }));
             } else {
               process.stdout.write(JSON.stringify({
-                additionalContext: result.output
+                decision: undefined,
+                hookSpecificOutput: {
+                  hookEventName: 'PostToolUse',
+                  additionalContext: result.output
+                }
               }));
             }
           } else {
