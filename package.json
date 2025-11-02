@@ -1,5 +1,8 @@
 {
   "name": "@jgoz/cli-lsp-client",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.20.1",
   "repository": {
     "type": "git",
