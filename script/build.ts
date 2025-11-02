@@ -16,13 +16,14 @@ export async function build(version: string): Promise<Record<string, string>> {
   await $`rm -rf dist`;
 
   const binaries: Record<string, string> = {};
+  const pkgName = pkg.name.split('/').at(1) ?? pkg.name;
 
   for (const [os, arch] of targets) {
     process.stdout.write(`Building ${os}-${arch}\n`);
-    const name = `${pkg.name}-${os}-${arch}`;
+    const name = `${pkgName}-${os}-${arch}`;
     await $`mkdir -p dist/${name}/bin`;
 
-    const binaryName = `${pkg.name}${os === 'windows' ? '.exe' : ''}`;
+    const binaryName = `${pkgName}${os === 'windows' ? '.exe' : ''}`;
     const outfile = `dist/${name}/bin/${binaryName}`;
     const target = `bun-${os}-${arch}`;
 

@@ -171,17 +171,19 @@ async function publishPlatformPackages(binaries: Record<string, string>) {
 async function publishMainPackage(version: string, binaries: Record<string, string>) {
   console.log("\n📤 Publishing main package...")
 
+  const pkgName = pkg.name.split('/').at(1) ?? pkg.name;
+
   // Create main package directory
-  await $`mkdir -p ./dist/${pkg.name}`
-  await $`cp -r ./bin ./dist/${pkg.name}/bin`
-  await $`cp ./script/preinstall.mjs ./dist/${pkg.name}/preinstall.mjs`
-  await $`cp ./script/postinstall.mjs ./dist/${pkg.name}/postinstall.mjs`
+  await $`mkdir -p ./dist/${pkgName}`
+  await $`cp -r ./bin ./dist/${pkgName}/bin`
+  await $`cp ./script/preinstall.mjs ./dist/${pkgName}/preinstall.mjs`
+  await $`cp ./script/postinstall.mjs ./dist/${pkgName}/postinstall.mjs`
 
   // Create main package.json with optionalDependencies
-  await Bun.file(`./dist/${pkg.name}/package.json`).write(
+  await Bun.file(`./dist/${pkgName}/package.json`).write(
     JSON.stringify(
       {
-        name: pkg.name,
+        name: pkg.name, // Preserve scope here
         version,
         description: pkg.description,
         repository: pkg.repository,
@@ -189,7 +191,7 @@ async function publishMainPackage(version: string, binaries: Record<string, stri
         homepage: pkg.homepage,
         license: pkg.license,
         bin: {
-          [pkg.name]: `./bin/${pkg.name}`,
+          [pkgName]: `./bin/${pkgName}`,
         },
         scripts: {
           preinstall: "node ./preinstall.mjs",
@@ -206,7 +208,7 @@ async function publishMainPackage(version: string, binaries: Record<string, stri
     if (options.dryRun) {
       console.log(`[DRY RUN] Would publish ${pkg.name}@${version}`)
     } else {
-      await $`cd ./dist/${pkg.name} && bun publish --access public`
+      await $`cd ./dist/${pkgName} && bun publish --access public`
       console.log(`✅ Published ${pkg.name}@${version}`)
     }
   } catch (error) {
