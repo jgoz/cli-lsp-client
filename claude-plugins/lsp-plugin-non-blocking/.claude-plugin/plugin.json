@@ -1,9 +1,0 @@
-{
-  "name": "lsp-plugin-non-blocking",
-  "version": "1.0.0",
-  "description": "Integrates CLI LSP Client with Claude Code using hooks for real-time language server updates (non-blocking)",
-  "author": {
-    "name": "Eli Oshinsky",
-    "email": "elimelech.oshinsky@gmail.com"
-  }
-}

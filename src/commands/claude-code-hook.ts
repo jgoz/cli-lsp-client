@@ -9,8 +9,7 @@ export function registerClaudeCodeHookCommand(program: Command) {
   program
     .command('claude-code-hook')
     .description('Internal command for Claude Code integration')
-    .option('-n, --non-blocking', 'Return non-blocking output when issues present')
-    .action(async ({ nonBlocking }) => {
+    .action(async () => {
       try {
         const isPluginMode = !!process.env.CLAUDE_PLUGIN_ROOT;
         const hookData = await readHookInput();
@@ -44,38 +43,26 @@ export function registerClaudeCodeHookCommand(program: Command) {
               }
             }));
           } else if (result.hasIssues) {
-            if (!nonBlocking) {
-              process.stdout.write(JSON.stringify({
-                decision: 'block',
-                reason: result.output
-              }));
-            } else {
-              process.stdout.write(JSON.stringify({
-                decision: undefined,
-                hookSpecificOutput: {
-                  hookEventName: 'PostToolUse',
-                  additionalContext: result.output
-                }
-              }));
-            }
+            process.stdout.write(JSON.stringify({
+              decision: undefined,
+              hookSpecificOutput: {
+                hookEventName: 'PostToolUse',
+                additionalContext: result.output
+              }
+            }));
           } else {
             process.stdout.write('{}');
           }
           process.exit(0);
         } else {
-          // Non-plugin mode: use stderr and exit codes
+          // Non-plugin mode: use stdout with exit 0 (non-blocking)
           if (result.daemonFailed) {
             process.stderr.write(result.output + '\n');
             process.exit(1);
           }
           if (result.hasIssues) {
-            if (!nonBlocking) {
-              process.stderr.write(result.output + '\n');
-              process.exit(2);
-            } else {
-              process.stdout.write(result.output + '\n');
-              process.exit(0);
-            }
+            process.stdout.write(result.output + '\n');
+            process.exit(0);
           }
           process.exit(0);
         }
