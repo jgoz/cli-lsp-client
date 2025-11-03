@@ -14,11 +14,6 @@
       "description": "Integrates CLI LSP Client with Claude Code using hooks for real-time language server updates"
     },
     {
-      "name": "lsp-plugin-non-blocking",
-      "source": "./claude-plugins/lsp-plugin",
-      "description": "Integrates CLI LSP Client with Claude Code using hooks for real-time language server updates (non-blocking)"
-    },
-    {
       "name": "eslint-plugin",
       "source": "./claude-plugins/eslint-plugin",
       "description": "Automatically runs ESLint checks on JavaScript/TypeScript files after edits"
