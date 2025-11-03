@@ -69,8 +69,13 @@ export function registerClaudeCodeHookCommand(program: Command) {
             process.exit(1);
           }
           if (result.hasIssues) {
-            process.stderr.write(result.output + '\n');
-            process.exit(2);
+            if (!nonBlocking) {
+              process.stderr.write(result.output + '\n');
+              process.exit(2);
+            } else {
+              process.stdout.write(result.output + '\n');
+              process.exit(0);
+            }
           }
           process.exit(0);
         }
