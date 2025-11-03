@@ -217,11 +217,17 @@ async function publishMainPackage(version: string, binaries: Record<string, stri
   }
 }
 
-async function updatePackageVersion(version: string) {
+async function updatePackageJsonFile(version: string) {
   console.log("\n📝 Updating package.json version...")
 
   const packageJson = { ...pkg, version }
   await Bun.file("package.json").write(JSON.stringify(packageJson, null, 2) + "\n")
+
+  console.log(`✅ Updated package.json to ${version}`)
+}
+
+async function commitAndPushVersion(version: string) {
+  console.log("\n📝 Committing version update...")
 
   if (options.dryRun) {
     console.log(`[DRY RUN] Would commit and push version ${version}`)
@@ -229,7 +235,7 @@ async function updatePackageVersion(version: string) {
     await $`git add package.json`
     await $`git commit -m ${version}`
     await $`git push`
-    console.log(`✅ Updated package.json to ${version} and committed`)
+    console.log(`✅ Committed and pushed version ${version}`)
   }
 }
 
@@ -275,10 +281,11 @@ async function main() {
     await validateNpmAuth()
   }
   await runTests()
+  await updatePackageJsonFile(version)
   const binaries = await buildBinaries(version)
   await publishPlatformPackages(binaries)
   await publishMainPackage(version, binaries)
-  await updatePackageVersion(version)
+  await commitAndPushVersion(version)
   await createGitTag(version)
 
   if (options.dryRun) {
